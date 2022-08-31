@@ -2,7 +2,7 @@
   <ul class="tasks">
     <li v-for="(task, idx) in tasks" :key="idx">
       <div class="task__container" :class="{ done: task.isDone }">
-        <p @click="doTask(task)">{{ task.name }}</p>
+        <p @click="changeTaskState(task)">{{ task.name }}</p>
         <div class="task-btns">
           <button class="btn delete-task-btn">
             <svg
@@ -49,9 +49,9 @@ export default {
     tasks: Array,
   },
   methods: {
-    doTask(task) {
+    changeTaskState(task) {
       console.log(task);
-      this.$emit("do-task", task);
+      this.$emit("change-task-state", task);
     },
   },
 };
@@ -62,6 +62,7 @@ export default {
 }
 .task__container {
   display: flex;
+  gap: 30px;
   justify-content: space-between;
   width: 480px;
   padding: 12px;
@@ -72,31 +73,36 @@ export default {
   border-left: 3px solid rgb(239 68 68);
 }
 .task__container p {
+  flex: 2;
   background-color: rgb(15 23 42);
+  text-align: start;
 }
 .done {
   border-left: 3px solid rgb(34 197 94);
+  text-decoration: line-through;
 }
 .task-btns {
   display: flex;
   gap: 10px;
   color: rgb(15 23 42);
+  background-color: rgb(15 23 42);
 }
 .btn {
   cursor: pointer;
   width: 22px;
   height: 22px;
   border: none;
-  background-color: rgb(15 23 42);
 }
 .delete-icon {
   width: 22px;
   height: 22px;
   stroke: rgb(239 68 68);
+  background-color: rgb(15 23 42);
 }
 .edit-icon {
   width: 22px;
   height: 22px;
   stroke: rgb(34 197 94);
+  background-color: rgb(15 23 42);
 }
 </style>

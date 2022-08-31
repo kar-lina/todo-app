@@ -46,7 +46,11 @@
       />
       <button @click="addTask" class="add-btn">ADD</button>
     </div>
-    <TaskList @do-task="doTask" v-if="tasks.length" :tasks="tasks" />
+    <TaskList
+      @change-task-state="changeTaskState"
+      v-if="tasks.length"
+      :tasks="tasks"
+    />
   </div>
 </template>
 
@@ -75,7 +79,6 @@ export default {
     // Get toast interface
     this.$toast = useToast();
     this.tasks = getFromLocalStorage("tasks");
-    console.log(this.tasks);
   },
 
   methods: {
@@ -108,11 +111,10 @@ export default {
     changeSelectedTab(name) {
       this.seletedTab = name;
     },
-    doTask(taskToDo) {
-      console.log(taskToDo);
+    changeTaskState(taskToDo) {
       this.tasks
         .filter((t) => t.name === taskToDo.name)
-        .forEach((t) => (t.isDone = true));
+        .forEach((t) => (t.isDone = !t.isDone));
     },
   },
   computed: {
