@@ -46,13 +46,17 @@
       />
       <button @click="addTask" class="add-btn">ADD</button>
     </div>
-    <TaskList @doATask="doTask(doneTask)" v-if="tasks.length" :tasks="tasks" />
+    <TaskList @do-task="doTask" v-if="tasks.length" :tasks="tasks" />
   </div>
 </template>
 
 <script>
 import { useToast } from "vue-toastification";
 import TaskList from "./components/TaskList.vue";
+import {
+  setToLocalStorage,
+  getFromLocalStorage,
+} from "./api/local-storage-manager";
 
 export default {
   name: "App",
@@ -63,16 +67,14 @@ export default {
     return {
       task: "",
       tasks: [],
-      doneTasks: [],
+
       selectedTab: "all",
     };
   },
   created() {
     // Get toast interface
     this.$toast = useToast();
-    if (localStorage.getItem("tasks")) {
-      this.tasks = JSON.parse(localStorage.getItem("tasks"));
-    }
+    this.tasks = getFromLocalStorage("tasks");
     console.log(this.tasks);
   },
 
@@ -98,16 +100,19 @@ export default {
         return;
       }
 
-      this.tasks.push({ task: this.task, isDone: false });
-      localStorage.setItem("tasks", JSON.stringify(this.tasks));
+      this.tasks.push({ name: this.task, isDone: false });
+      setToLocalStorage("tasks", this.tasks);
+
       this.task = "";
     },
     changeSelectedTab(name) {
       this.seletedTab = name;
     },
-    doTask(doneTask) {
-      console.log(doneTask);
-      this.tasks.find((t) => t.task === doneTask).isDone = true;
+    doTask(taskToDo) {
+      console.log(taskToDo);
+      this.tasks
+        .filter((t) => t.name === taskToDo.name)
+        .forEach((t) => (t.isDone = true));
     },
   },
   computed: {

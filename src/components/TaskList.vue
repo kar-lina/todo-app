@@ -1,8 +1,8 @@
 <template>
   <ul class="tasks">
-    <li @click="doTask(task)" v-for="(task, idx) in tasks" :key="idx">
+    <li v-for="(task, idx) in tasks" :key="idx">
       <div class="task__container" :class="{ done: task.isDone }">
-        <p>{{ task.task }}</p>
+        <p @click="doTask(task)">{{ task.name }}</p>
         <div class="task-btns">
           <button class="btn delete-task-btn">
             <svg
@@ -51,7 +51,7 @@ export default {
   methods: {
     doTask(task) {
       console.log(task);
-      this.$emit("doATask", task.task);
+      this.$emit("do-task", task);
     },
   },
 };
