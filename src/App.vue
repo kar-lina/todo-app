@@ -21,19 +21,27 @@
       </div>
       <ul class="nav">
         <li class="nav-item all active">
-          <a @click="changeSelectedTab('all')" href="" class="nav-link active"
-            >All</a
+          <div
+            @click.stop="changeSelectedTab('all')"
+            href=""
+            class="nav-link active"
           >
+            All
+          </div>
         </li>
         <li class="nav-item done">
-          <a @click="changeSelectedTab('undone')" href="" class="nav-link"
-            >Done</a
-          >
+          <div @click.stop="changeSelectedTab('done')" href="" class="nav-link">
+            Done
+          </div>
         </li>
         <li class="nav-item undone">
-          <a @click="changeSelectedTab('done')" href="" class="nav-link"
-            >Undone</a
+          <div
+            @click.stop="changeSelectedTab('undone')"
+            href=""
+            class="nav-link"
           >
+            Undone
+          </div>
         </li>
       </ul>
     </header>
@@ -49,7 +57,8 @@
     <TaskList
       @change-task-state="changeTaskState"
       v-if="tasks.length"
-      :tasks="tasks"
+      :tasks="selectedTasks"
+      :tab="selectedTab"
     />
   </div>
 </template>
@@ -109,7 +118,8 @@ export default {
       this.task = "";
     },
     changeSelectedTab(name) {
-      this.seletedTab = name;
+      this.selectedTab = name;
+      console.log(this.selectedTab);
     },
     changeTaskState(taskToDo) {
       this.tasks
@@ -119,7 +129,28 @@ export default {
   },
   computed: {
     undoneTasks() {
+      return this.tasks.filter((el) => !el.isDone);
+    },
+    doneTasks() {
       return this.tasks.filter((el) => el.isDone);
+    },
+    selectedTasks() {
+      switch (this.selectedTab) {
+        case "undone":
+          return this.undoneTasks;
+        case "done":
+          return this.doneTasks;
+        default:
+          return this.tasks;
+      }
+    },
+    watch: {
+      tasks: {
+        handler() {
+          setToLocalStorage("tasks", this.tasks);
+        },
+        deep: true,
+      },
     },
   },
 };

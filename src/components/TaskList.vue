@@ -47,6 +47,7 @@ export default {
   name: "TaskList",
   props: {
     tasks: Array,
+    tab: String,
   },
   methods: {
     changeTaskState(task) {
