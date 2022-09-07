@@ -20,28 +20,26 @@
         <h1 class="header">To Do List</h1>
       </div>
       <ul class="nav">
-        <li class="nav-item all active">
-          <div
-            @click.stop="changeSelectedTab('all')"
-            href=""
-            class="nav-link active"
-          >
-            All
-          </div>
+        <li
+          class="nav-item all"
+          :class="{ active: this.selectedTab === 'all' }"
+          @click.stop="changeSelectedTab('all')"
+        >
+          All
         </li>
-        <li class="nav-item done">
-          <div @click.stop="changeSelectedTab('done')" href="" class="nav-link">
-            Done
-          </div>
+        <li
+          class="nav-item done"
+          :class="{ active: this.selectedTab === 'done' }"
+          @click.stop="changeSelectedTab('done')"
+        >
+          Done
         </li>
-        <li class="nav-item undone">
-          <div
-            @click.stop="changeSelectedTab('undone')"
-            href=""
-            class="nav-link"
-          >
-            Undone
-          </div>
+        <li
+          class="nav-item undone"
+          :class="{ active: this.selectedTab === 'undone' }"
+          @click.stop="changeSelectedTab('undone')"
+        >
+          Undone
         </li>
       </ul>
     </header>
@@ -125,6 +123,7 @@ export default {
       this.tasks
         .filter((t) => t.name === taskToDo.name)
         .forEach((t) => (t.isDone = !t.isDone));
+      setToLocalStorage("tasks", this.tasks);
     },
   },
   computed: {
