@@ -4,7 +4,7 @@
       <div class="task__container" :class="{ done: task.isDone }">
         <p @click="changeTaskState(task)">{{ task.name }}</p>
         <div class="task-btns">
-          <button class="btn delete-task-btn">
+          <button class="btn delete-task-btn" @click="deleteTask(task.name)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -20,7 +20,7 @@
               />
             </svg>
           </button>
-          <button class="btn edit-task-btn">
+          <button class="btn edit-task-btn" @click="editTask(task.name)">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -53,6 +53,12 @@ export default {
     changeTaskState(task) {
       console.log(task);
       this.$emit("change-task-state", task);
+    },
+    deleteTask(taskName) {
+      this.$emit("delete-task", taskName);
+    },
+    editTask(taskName) {
+      this.$emit("edit-task", taskName);
     },
   },
 };

@@ -54,6 +54,8 @@
     </div>
     <TaskList
       @change-task-state="changeTaskState"
+      @delete-task="deleteTask"
+      @edit-task="editTask"
       v-if="tasks.length"
       :tasks="selectedTasks"
       :tab="selectedTab"
@@ -123,7 +125,15 @@ export default {
       this.tasks
         .filter((t) => t.name === taskToDo.name)
         .forEach((t) => (t.isDone = !t.isDone));
-      setToLocalStorage("tasks", this.tasks);
+      // setToLocalStorage("tasks", this.tasks);
+    },
+    deleteTask(taskToDelete) {
+      this.tasks = this.tasks.filter((t) => t.name !== taskToDelete);
+
+      // setToLocalStorage("tasks", this.tasks);
+    },
+    editTask(taskToEdit) {
+      this.task = taskToEdit;
     },
   },
   computed: {
@@ -143,13 +153,13 @@ export default {
           return this.tasks;
       }
     },
-    watch: {
-      tasks: {
-        handler() {
-          setToLocalStorage("tasks", this.tasks);
-        },
-        deep: true,
+  },
+  watch: {
+    tasks: {
+      handler() {
+        setToLocalStorage("tasks", this.tasks);
       },
+      deep: true,
     },
   },
 };
